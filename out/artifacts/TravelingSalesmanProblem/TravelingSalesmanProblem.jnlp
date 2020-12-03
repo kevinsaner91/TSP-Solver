@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="TravelingSalesmanProblem.jnlp">
+  <information>
+    <title>TravelingSalesmanProblem</title>
+    <vendor>Unknown</vendor>
+    <description>TravelingSalesmanProblem</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="TravelingSalesmanProblem.jar" size="18258" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="1200" height="722" main-class="GUI.Main"  name="TravelingSalesmanProblem" />
+  <update check="background"/>
+</jnlp>

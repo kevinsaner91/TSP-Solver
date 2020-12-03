@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="722.0" prefWidth="1200.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
+   <children>
+      <Pane fx:id="gridPane" layoutX="464.0" layoutY="240.0" prefHeight="470.0" prefWidth="726.0" style="-fx-background-color: white;" />
+      <Label fx:id="lblSelectedPoint" layoutX="40.0" layoutY="153.0" prefHeight="40.0" prefWidth="328.0" textFill="#686868" />
+      <Button fx:id="btnCalculate" layoutX="41.0" layoutY="278.0" mnemonicParsing="false" onAction="#btnCalculatePressed" style="-fx-background-color: #484848;" text="Berechnen" textFill="WHITE" />
+      <Label fx:id="lblDistance" layoutX="128.0" layoutY="275.0" prefHeight="32.0" prefWidth="262.0" text="Distanz: " textFill="#686868">
+         <font>
+            <Font name="Arial" size="12.0" />
+         </font></Label>
+      <Button fx:id="btnReset" layoutX="40.0" layoutY="662.0" mnemonicParsing="false" onAction="#btnResetPressed" style="-fx-background-color: #484848;" text="Zurücksetzen" textFill="WHITE" />
+      <Label layoutX="39.0" layoutY="65.0" prefHeight="65.0" prefWidth="795.0" text="Traveling Salesman Problem" textFill="#686868">
+         <font>
+            <Font name="Arial Bold" size="57.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnGenerate" layoutX="137.0" layoutY="662.0" mnemonicParsing="false" onAction="#btnGeneratePressed" style="-fx-background-color: #484848;" text="Generieren" textFill="WHITE" />
+      <TextField fx:id="txtNumber" layoutX="232.0" layoutY="662.0" promptText="Anzahl Punkte" />
+      <Button fx:id="btnImport" layoutX="40.0" layoutY="623.0" mnemonicParsing="false" onAction="#btnImportPressed" prefHeight="25.0" prefWidth="93.0" style="-fx-background-color: #484848;" text="Import Map" textFill="WHITE" />
+      <Button fx:id="btnExport" layoutX="146.0" layoutY="623.0" mnemonicParsing="false" onAction="#btnExportPressed" style="-fx-background-color: #484848;" text="Export Map" textFill="WHITE" />
+      <Button fx:id="btnReconnect" layoutX="41.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnReconnectPressed" prefHeight="25.0" prefWidth="184.0" style="-fx-background-color: #484848;" text="neu verbinden" textFill="WHITE" />
+      <CheckBox fx:id="checkShowLines" layoutX="40.0" layoutY="240.0" mnemonicParsing="false" onAction="#drawLinesIfActivated" text="Linien anzeigen" textFill="#686868">
+         <font>
+            <Font name="Arial Bold" size="12.0" />
+         </font></CheckBox>
+      <TableView fx:id="tblCity" layoutX="40.0" layoutY="316.0" prefHeight="287.0" prefWidth="111.0" stylesheets="@application.css" onMouseClicked="#clearSelection">
+        <columns>
+          <TableColumn fx:id="clCity" prefWidth="110.0" text="Stadt" />
+        </columns>
+      </TableView>
+      <TableView fx:id="tblOrder" layoutX="148.0" layoutY="316.0" prefHeight="287.0" prefWidth="111.0" stylesheets="@application.css">
+         <columns>
+            <TableColumn fx:id="clOrder" prefWidth="110.0" text="Reihenfolge" />
+         </columns>
+      </TableView>
+   </children>
+</Pane>
