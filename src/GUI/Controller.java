@@ -128,7 +128,6 @@ public class Controller {
     }
 
     public void cityChosen(int cityNr){
-        btnCalculate.setDisable(PositionCreator.hasDuplicates(points));
         focused();
 
         lastPoint = currentPressedPoint;
@@ -153,6 +152,7 @@ public class Controller {
 
         tblOrder.setItems(orderList);
         lblSelectedPoint.setText("Punkt " + (currentPressedPoint.getPointNr()) + " ist ausgewählt.");
+        btnCalculate.setDisable(PositionCreator.hasDuplicates(points));
     }
 
     private void createLineForCurPoint(Point pressedPoint, Point previousPoint) {
