@@ -8,10 +8,13 @@
    <children>
       <Pane fx:id="gridPane" layoutX="464.0" layoutY="240.0" prefHeight="470.0" prefWidth="726.0" style="-fx-background-color: white;" />
       <Label fx:id="lblSelectedPoint" layoutX="40.0" layoutY="153.0" prefHeight="40.0" prefWidth="328.0" textFill="#686868" />
-      <Button fx:id="btnCalculate" layoutX="41.0" layoutY="278.0" mnemonicParsing="false" onAction="#btnCalculatePressed" style="-fx-background-color: #484848;" text="Berechnen" textFill="WHITE" />
-      <Label fx:id="lblDistance" layoutX="128.0" layoutY="275.0" prefHeight="32.0" prefWidth="262.0" text="Distanz: " textFill="#686868">
+      <Button fx:id="btnCalculate" layoutX="40.0" layoutY="181.0" mnemonicParsing="false" onAction="#btnCalculatePressed" prefHeight="40.0" prefWidth="149.0" style="-fx-background-color: #484848; -fx-font-weight: bold;" text="Berechnen" textFill="WHITE">
          <font>
-            <Font name="Arial" size="12.0" />
+            <Font size="15.0" />
+         </font></Button>
+      <Label fx:id="lblDistance" layoutX="195.0" layoutY="185.0" prefHeight="32.0" prefWidth="262.0" style="-fx-font-weight: bold;" text="Distanz: " textFill="#686868">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="15.0" />
          </font></Label>
       <Button fx:id="btnReset" layoutX="40.0" layoutY="662.0" mnemonicParsing="false" onAction="#btnResetPressed" style="-fx-background-color: #484848;" text="Zurücksetzen" textFill="WHITE" />
       <Label layoutX="39.0" layoutY="65.0" prefHeight="65.0" prefWidth="795.0" text="Traveling Salesman Problem" textFill="#686868">
@@ -23,12 +26,12 @@
       <TextField fx:id="txtNumber" layoutX="232.0" layoutY="662.0" promptText="Anzahl Punkte" />
       <Button fx:id="btnImport" layoutX="40.0" layoutY="623.0" mnemonicParsing="false" onAction="#btnImportPressed" prefHeight="25.0" prefWidth="93.0" style="-fx-background-color: #484848;" text="Import Map" textFill="WHITE" />
       <Button fx:id="btnExport" layoutX="146.0" layoutY="623.0" mnemonicParsing="false" onAction="#btnExportPressed" style="-fx-background-color: #484848;" text="Export Map" textFill="WHITE" />
-      <Button fx:id="btnReconnect" layoutX="41.0" layoutY="193.0" mnemonicParsing="false" onAction="#btnReconnectPressed" prefHeight="25.0" prefWidth="184.0" style="-fx-background-color: #484848;" text="neu verbinden" textFill="WHITE" />
+      <Button fx:id="btnReconnect" layoutX="77.0" layoutY="281.0" mnemonicParsing="false" onAction="#btnReconnectPressed" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #484848;" text="neu verbinden" textFill="WHITE" />
       <CheckBox fx:id="checkShowLines" layoutX="40.0" layoutY="240.0" mnemonicParsing="false" onAction="#drawLinesIfActivated" text="Linien anzeigen" textFill="#686868">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font></CheckBox>
-      <TableView fx:id="tblCity" layoutX="40.0" layoutY="316.0" prefHeight="287.0" prefWidth="111.0" stylesheets="@application.css" onMouseClicked="#clearSelection">
+      <TableView fx:id="tblCity" layoutX="40.0" layoutY="316.0" onMouseClicked="#clearSelection" prefHeight="287.0" prefWidth="111.0" stylesheets="@application.css">
         <columns>
           <TableColumn fx:id="clCity" prefWidth="110.0" text="Stadt" />
         </columns>
@@ -38,5 +41,8 @@
             <TableColumn fx:id="clOrder" prefWidth="110.0" text="Reihenfolge" />
          </columns>
       </TableView>
+      <Button fx:id="btnCalculateBestRoute" layoutX="580.0" layoutY="205.0" mnemonicParsing="false" onAction="#btnCalculateBestRoutePressed" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #484848;" text="Beste Route Berechnen" textFill="WHITE" />
+      <Label fx:id="lblBestRoute" layoutX="731.0" layoutY="209.0" text="Status: " textFill="#686868" />
+      <Button fx:id="btnCancel" disable="true" layoutX="899.0" layoutY="205.0" mnemonicParsing="false" onAction="#btnCancelPressed" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #484848;" text="Abbrechen" textFill="WHITE" />
    </children>
 </Pane>

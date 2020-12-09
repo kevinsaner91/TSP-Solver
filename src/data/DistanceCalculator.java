@@ -1,6 +1,6 @@
 /*
     Change Date:    <2020-11-04>
-    Author:          Schweizer Micha
+    Author:         Schweizer Micha
     Version:		1.1.0.0
     Description:    This class calculates the distance from the selected sequence.
 */
@@ -8,7 +8,7 @@ package data;
 
 public class DistanceCalculator {
 
-    public double calculateDistance(Point[] points){
+    public int calculateDistance(Point[] points){
         double finalDistance = 0;
         Point[] sortedPoints = sortPointsBySequence(points);
 
@@ -21,13 +21,12 @@ public class DistanceCalculator {
                         sortedPoints[0].getLayoutX(), sortedPoints[0].getLayoutY());
             }
         }
-        finalDistance *= 10;
-        return (double) Math.round(finalDistance * 100) / 100;
+//        finalDistance *= 10;
+        return (int) Math.round(finalDistance);
     }
 
     public double getDistanceBetweenPoints(double xFirstPoint, double yFirstPoint, double xSecondPoint, double ySecondPoint){
         double distance;
-
         double xLength = xSecondPoint - xFirstPoint;
         double yLength = ySecondPoint - yFirstPoint;
 

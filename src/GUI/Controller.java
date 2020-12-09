@@ -1,13 +1,11 @@
 package GUI;
 
-import data.DistanceCalculator;
-import data.FileHandler;
-import data.Point;
-import data.PositionCreator;
+import data.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -17,15 +15,17 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Controller {
     @FXML Pane                          gridPane;
     @FXML Button                        btnCalculate;
+    @FXML Button                        btnCalculateBestRoute;
+    @FXML Button                        btnCancel;
     @FXML Label                         lblSelectedPoint;
     @FXML Label                         lblDistance;
+    @FXML Label                         lblBestRoute;
     @FXML TextField                     txtNumber;
     @FXML CheckBox                      checkShowLines;
     @FXML TableView<Object>             tblOrder;
@@ -33,7 +33,7 @@ public class Controller {
     @FXML TableColumn<Object, String>   clOrder;
     @FXML TableColumn<Object, String>   clCity;
 
-    public static int DEFAULT_NR_POINTS = 10;
+    public static int DEFAULT_NR_POINTS = 5;
 
     private Point   currentPressedPoint = null;
     private Point   lastPoint           = null;
@@ -45,6 +45,8 @@ public class Controller {
 
     private int     firstButtonNr;
     private boolean isFirst = true;
+
+    private Task<String> backGroundCalculator;
 
     public void initialize(){
         addCityListener();
@@ -199,8 +201,42 @@ public class Controller {
 
     public void btnCalculatePressed () {
         DistanceCalculator distanceCalculator = new DistanceCalculator();
-        lblDistance.setText("Distanz: " + distanceCalculator.calculateDistance(points));
+        lblDistance.setText("Distanz: " + distanceCalculator.calculateDistance(points) + "px");
         tblCity.setDisable(true);
+    }
+
+    public void btnCalculateBestRoutePressed(){
+        backGroundCalculator = new BruteTask(points);
+        backGroundCalculator.setOnSucceeded(event -> {
+            lblBestRoute.setText("Result: " + backGroundCalculator.getValue() + "px");
+            btnCalculateBestRoute.setDisable(false);
+            btnCancel.setDisable(true);
+            backGroundCalculator = null;
+        });
+        backGroundCalculator.setOnRunning(event -> {
+            lblBestRoute.setText("State: calculating. . .");
+            btnCalculateBestRoute.setDisable(true);
+            btnCancel.setDisable(false);
+        });
+        backGroundCalculator.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+            lblBestRoute.setText("State: failed ):");
+            btnCalculateBestRoute.setDisable(false);
+            btnCancel.setDisable(true);
+            backGroundCalculator = null;
+        });
+        backGroundCalculator.setOnCancelled(event -> {
+            lblBestRoute.setText("State: canceled ):");
+            btnCalculateBestRoute.setDisable(false);
+            btnCancel.setDisable(true);
+            backGroundCalculator = null;
+        });
+
+        new Thread(backGroundCalculator).start();
+    }
+
+    public void btnCancelPressed(){
+        backGroundCalculator.cancel();
     }
 
     public void btnResetPressed () {
