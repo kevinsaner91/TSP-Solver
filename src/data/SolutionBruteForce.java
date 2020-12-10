@@ -1,12 +1,11 @@
 package data;
 
 import javafx.concurrent.Task;
-
 import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class SolutionBrute{
+public class SolutionBruteForce {
     private final DistanceCalculator calculator = new DistanceCalculator();
     private final Point[] points;
     private final Task<String> task;
@@ -14,12 +13,18 @@ public class SolutionBrute{
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
+    /*
+    --------------------------------------------------------------------------------------------------------------------
+    FEHLER: ES DAS PROGRAMM MUSS IM LOOP MIT DER SEQUENTS 01234 STARTEN UND NICHT 1234 (BEI 5 POINTS)
+    --------------------------------------------------------------------------------------------------------------------
+     */
+
     /**
      * Prepares the class for bruteforce
      * @param p point[] used to change the sequences and calculate the distances
      * @param t current task used to check if is canceled;
      */
-    public SolutionBrute(Point[] p, Task<String> t){
+    public SolutionBruteForce(Point[] p, Task<String> t){
         points = p;
         task = t;
     }
@@ -40,14 +45,19 @@ public class SolutionBrute{
             boolean wasZero;
             char[] newSequences;
 
-            long maxSeqNr = calcMaxNr(points);
+            long maxSeqNr = calcMaxNr(points.length);
+            long minSeqNr = calcMinNr(points.length);
 
-            for (long seqNr = 0; seqNr < maxSeqNr; seqNr++) {
+            for (long seqNr = minSeqNr; seqNr <= maxSeqNr; seqNr++) {
                 if(!task.isCancelled()) {
                     wasZero = false;
                     newSequences = Long.toString(seqNr).toCharArray();
 
-                    if (getCharArrayMaxValue(newSequences) < maxDigit) {
+                    if(newSequences.length < points.length){
+                        newSequences = putZeroInCharArray(newSequences);
+                    }
+
+                    if (getCharArrayMaxValue(newSequences) <= maxDigit) {
                         for (int pNr = 0; pNr < points.length; pNr++) {
                             int newSeq;
                             try {
@@ -81,18 +91,35 @@ public class SolutionBrute{
 
     /**
      * Calculates the highest possible sequence for a Point[]
+     * @param arrayLength length of the array
      * @return highest possible Sequence as a Long (ex. 9876543210)
      */
-    public long calcMaxNr(Point[] p){
-        maxDigit = p.length - 1;
+    public long calcMaxNr(int arrayLength){
+        maxDigit = arrayLength - 1;
         StringBuilder maxString = new StringBuilder();
 
-        for (int i = 0; i < p.length; i++) {
+        for (int i = 0; i < arrayLength; i++) {
             maxString.append(maxDigit - i);
         }
 
-        System.out.println("maxNr = " + Long.parseLong(maxString.toString()));
+        System.out.println("maxNr set to: " + Long.parseLong(maxString.toString()));
         return Long.parseLong(maxString.toString());
+    }
+
+    /**
+     * Calculates the lowest possible sequence for a Point[]
+     * @param arrayLength length of the array
+     * @return lowest possible Sequence as a Long (ex. 0123456789)
+     */
+    public long calcMinNr(int arrayLength){
+        StringBuilder minString = new StringBuilder();
+
+        for (int i = 0; i < arrayLength; i++) {
+            minString.append(i);
+        }
+
+        System.out.println("minNr set to: " + Long.parseLong(minString.toString()));
+        return Long.parseLong(minString.toString());
     }
 
     /**
@@ -108,15 +135,11 @@ public class SolutionBrute{
 
         if (!PositionCreator.hasDuplicates(p)) {
             System.out.println("<-.->");
-            System.out.println("calculating...");
-
             Arrays.asList(p).forEach(point -> System.out.print("| " + point.getSequence() + " |"));
             System.out.println();
 
             currentRoute = calculator.calculateDistance(p);
-            System.out.println("Current route: " + currentRoute);
             if (currentRoute < bestRoute) {
-                System.out.println("is better");
                 bestRoute = currentRoute;
             }
             System.out.println("<-.->");
@@ -137,5 +160,16 @@ public class SolutionBrute{
             }
         }
         return maxValue;
+    }
+
+    public char[] putZeroInCharArray(char[] oldArray){
+        char[] newArray = new char[oldArray.length + 1];
+
+        newArray[0] = (char) 48;
+        for (int i = 1; i < newArray.length; i++) {
+            newArray[i] = oldArray[i-1];
+        }
+
+        return newArray;
     }
 }

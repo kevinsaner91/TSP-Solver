@@ -15,7 +15,6 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Controller {
@@ -33,7 +32,7 @@ public class Controller {
     @FXML TableColumn<Object, String>   clOrder;
     @FXML TableColumn<Object, String>   clCity;
 
-    public static int DEFAULT_NR_POINTS = 5;
+    public static int DEFAULT_NR_POINTS = 10;
 
     private Point   currentPressedPoint = null;
     private Point   lastPoint           = null;
@@ -206,7 +205,7 @@ public class Controller {
     }
 
     public void btnCalculateBestRoutePressed(){
-        backGroundCalculator = new BruteTask(points);
+        backGroundCalculator = new BruteForceTask(points);
         backGroundCalculator.setOnSucceeded(event -> {
             lblBestRoute.setText("Result: " + backGroundCalculator.getValue() + "px");
             btnCalculateBestRoute.setDisable(false);
