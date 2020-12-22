@@ -13,12 +13,6 @@ public class SolutionBruteForce {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    /*
-    --------------------------------------------------------------------------------------------------------------------
-    FEHLER: ES DAS PROGRAMM MUSS IM LOOP MIT DER SEQUENTS 01234 STARTEN UND NICHT 1234 (BEI 5 POINTS)
-    --------------------------------------------------------------------------------------------------------------------
-     */
-
     /**
      * Prepares the class for bruteforce
      * @param p point[] used to change the sequences and calculate the distances

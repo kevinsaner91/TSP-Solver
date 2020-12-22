@@ -7,7 +7,6 @@
 <Pane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="722.0" prefWidth="1200.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller">
    <children>
       <Pane fx:id="gridPane" layoutX="464.0" layoutY="240.0" prefHeight="470.0" prefWidth="726.0" style="-fx-background-color: white;" />
-      <Label fx:id="lblSelectedPoint" layoutX="40.0" layoutY="153.0" prefHeight="40.0" prefWidth="328.0" textFill="#686868" />
       <Button fx:id="btnCalculate" layoutX="40.0" layoutY="181.0" mnemonicParsing="false" onAction="#btnCalculatePressed" prefHeight="40.0" prefWidth="149.0" style="-fx-background-color: #484848; -fx-font-weight: bold;" text="Berechnen" textFill="WHITE">
          <font>
             <Font size="15.0" />

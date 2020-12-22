@@ -22,7 +22,6 @@ public class Controller {
     @FXML Button                        btnCalculate;
     @FXML Button                        btnCalculateBestRoute;
     @FXML Button                        btnCancel;
-    @FXML Label                         lblSelectedPoint;
     @FXML Label                         lblDistance;
     @FXML Label                         lblBestRoute;
     @FXML TextField                     txtNumber;
@@ -85,7 +84,7 @@ public class Controller {
 
     private void loadButtons () {
         for (Point point : points) {
-            Text text = new Text(String.valueOf(point.getSequence()));
+            Text text = new Text(point.getNrAsLetter());
             text.setFill(Color.YELLOW);
             text.setLayoutX((point.getLayoutX() * 10) - 20);
             text.setLayoutY(point.getLayoutY() * 10);
@@ -112,17 +111,13 @@ public class Controller {
     private void addCityListener(){
         tblCity.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             if (newValue != null) {
-                try {
-                    TableView.TableViewSelectionModel<? extends Object> selectionModel = tblCity.getSelectionModel();
-                    ObservableList<TablePosition> selectedCells = selectionModel.getSelectedCells();
-                    if(!selectedCells.isEmpty()) {
-                        TablePosition tablePosition = selectedCells.get(0);
+                TableView.TableViewSelectionModel<? extends Object> selectionModel = tblCity.getSelectionModel();
+                ObservableList<TablePosition> selectedCells = selectionModel.getSelectedCells();
+                if(!selectedCells.isEmpty()) {
+                    TablePosition tablePosition = selectedCells.get(0);
 
-                        String val = tablePosition.getTableColumn().getCellData(newValue).toString();
-                        cityChosen(Integer.parseInt(val));
-                    }
-                } catch (NullPointerException e) {
-                    System.out.println("en random exception cho");
+                    String val = tablePosition.getTableColumn().getCellData(newValue).toString();
+                    cityChosen(Point.getLetterAsNr(val));
                 }
             }
         });
@@ -152,7 +147,6 @@ public class Controller {
         createLineForCurPoint(currentPressedPoint, lastPoint);
 
         tblOrder.setItems(orderList);
-        lblSelectedPoint.setText("Punkt " + (currentPressedPoint.getPointNr()) + " ist ausgewählt.");
         btnCalculate.setDisable(PositionCreator.hasDuplicates(points));
     }
 
@@ -193,7 +187,7 @@ public class Controller {
     private void setTable() {
         tblCity.getItems().clear();
         for (int i = 0; i < points.length; i++) {
-            cityList.add(new SetTableView(i));
+            cityList.add(new SetTableView(points[i].getNrAsLetter()));
         }
         tblCity.setItems(cityList);
     }
@@ -255,12 +249,12 @@ public class Controller {
     }
 
     public void btnGeneratePressed () {
-        if (Integer.parseInt(txtNumber.getText()) < 31) {
+        if (Integer.parseInt(txtNumber.getText()) < 27) {
             restart();
             DEFAULT_NR_POINTS = Integer.parseInt(txtNumber.getText());
             createButtons();
         } else {
-            JOptionPane.showMessageDialog(null, "Kann nicht mehr als 30 punkte generieren", "to big",
+            JOptionPane.showMessageDialog(null, "Kann nicht mehr als 26 punkte generieren", "to big",
                     JOptionPane.ERROR_MESSAGE);
         }
     }

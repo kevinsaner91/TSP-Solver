@@ -1,13 +1,13 @@
 package GUI;
 
 public class SetTableView {
-    private int id;
+    private String id;
 
-    public SetTableView(int id){
+    public SetTableView(String id){
         this.id = id;
     }
 
-    public int getId(){
+    public String getId(){
         return id;
     }
 }

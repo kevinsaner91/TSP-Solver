@@ -30,4 +30,14 @@ public class Point extends Circle {
     public void setSequence(int sequence) {
         this.sequence = sequence;
     }
+
+    public String getNrAsLetter(){
+        char val = (char) (pointNr + 65);
+        return Character.toString(val);
+    }
+
+    public static int getLetterAsNr(String letter){
+        char val = letter.toCharArray()[0];
+        return (val - 65);
+    }
 }
