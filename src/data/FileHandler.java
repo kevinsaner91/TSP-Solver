@@ -19,7 +19,7 @@ public class FileHandler {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileChooser.getSelectedFile().getAbsolutePath()));
 
             for (Point p: points) {
-                tempTxtToWrite = p.getLayoutX() / 10+ DELIMITER + p.getLayoutY() / 10+ DELIMITER + p.getSequence() + "\n";
+                tempTxtToWrite = p.getLayoutX() / 10+ DELIMITER + p.getLayoutY() / 10+ DELIMITER + p.getPointNr() + "\n";
                 writer.write(tempTxtToWrite);
             }
 
@@ -38,7 +38,7 @@ public class FileHandler {
     public static Point[] importFileToMap(){
         final int GET_X = 0;
         final int GET_Y = 1;
-        final int GET_SEQ = 2;
+        final int GET_POINTNR = 2;
 
         ArrayList<Point> pointsMap = new ArrayList<Point>();
         String currentLine = "";
@@ -57,7 +57,7 @@ public class FileHandler {
                 point = new Point();
                 point.setLayoutX(Double.parseDouble(currentSplitLine[GET_X]));
                 point.setLayoutY(Double.parseDouble(currentSplitLine[GET_Y]));
-                point.setPointNr(Integer.parseInt(currentSplitLine[GET_SEQ]));
+                point.setPointNr(Integer.parseInt(currentSplitLine[GET_POINTNR]));
                 pointsMap.add(point);
                 System.out.println("Point Created with: " + currentLine);
             }
