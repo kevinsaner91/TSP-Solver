@@ -1,2 +1,2 @@
 @echo off
-java -jar TravelingSalesmanProblem.jar
+javaw -jar TravelingSalesmanProblem.jar
