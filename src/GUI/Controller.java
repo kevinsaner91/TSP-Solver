@@ -33,7 +33,7 @@ public class Controller {
     @FXML TableColumn<Object, String>   clOrder;
     @FXML TableColumn<Object, String>   clCity;
 
-    public static int DEFAULT_NR_POINTS = 5;
+    public static int DEFAULT_NR_POINTS = 10;
 
     private Point   currentPressedPoint = null;
     private Point   lastPoint           = null;
@@ -207,14 +207,19 @@ public class Controller {
         backgroundCalculator = new BruteForceTask(points);
 
         backgroundCalculator.setOnSucceeded(event -> {
-            if(checkShowCalcResult.isSelected()) {
-                lblBestRoute.setText("Result: " + backgroundCalculator.getValue()[0] + "px");
+            if(backgroundCalculator.getValue()[0].contains("-1")) {
+                lblBestRoute.setText("Overflow");
             }else{
-                lblBestRoute.setText("Done (:");
+                if (checkShowCalcResult.isSelected()) {
+                    lblBestRoute.setText("Result: " + backgroundCalculator.getValue()[0] + "px");
+                } else {
+                    lblBestRoute.setText("Done (:");
+                }
+                bestCalculatedScore = Integer.parseInt(backgroundCalculator.getValue()[0]);
+                bestCalculatedSeq = Util.stringArrayToIntArray(backgroundCalculator.getValue()[1].split(FileHandler.DELIMITER));
+                drawBestCalcLinesIfSelected();
             }
-            bestCalculatedScore = Integer.parseInt(backgroundCalculator.getValue()[0]);
-            bestCalculatedSeq = Util.stringArrayToIntArray(backgroundCalculator.getValue()[1].split(FileHandler.DELIMITER));
-            drawBestCalcLinesIfSelected();
+
             btnCalculateBestRoute.setDisable(false);
             btnCancel.setDisable(true);
             backgroundCalculator = null;
@@ -290,12 +295,13 @@ public class Controller {
 
     public void btnGeneratePressed () {
         try {
-            if (Integer.parseInt(txtNumber.getText()) < 27) {
+            if (Integer.parseInt(txtNumber.getText()) < 27 && Integer.parseInt(txtNumber.getText()) > 1) {
                 restart();
                 DEFAULT_NR_POINTS = Integer.parseInt(txtNumber.getText());
                 createButtons();
+                setTable();
             } else {
-                JOptionPane.showMessageDialog(null, "Kann nicht mehr als 26 punkte generieren", "to big",
+                JOptionPane.showMessageDialog(null, "Die angegebende Zahl ist nicht im erlaubten Bereich ( 2 - 26 )", "invalid",
                         JOptionPane.ERROR_MESSAGE);
             }
         }catch (NumberFormatException e){

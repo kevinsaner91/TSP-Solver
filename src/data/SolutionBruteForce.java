@@ -30,7 +30,7 @@ public class SolutionBruteForce {
         if(points.length > 14){
             JOptionPane.showMessageDialog(null, "Kann für maximal 14 Punkte berechnen! Anzahl Punkte: " + points.length,
                     "Overflow", JOptionPane.ERROR_MESSAGE);
-            return new String[] {"Overflow"};
+            return new String[] {"-1"};
         }else {
             LocalDateTime startTime = LocalDateTime.now();
             System.out.println("Calculating");
@@ -93,7 +93,7 @@ public class SolutionBruteForce {
         maxDigit = arrayLength - 1;
         StringBuilder maxString = new StringBuilder();
 
-        for (int i = 0; i < arrayLength; i++) {
+        for (int i = 0; i < arrayLength - 1; i++) {
             maxString.append(maxDigit - i);
         }
 
@@ -129,11 +129,9 @@ public class SolutionBruteForce {
             int tmpCalcVal = calculator.calculateDistance(p);
             if (tmpCalcVal < curBestRoute) {
                 System.out.print(" .");
-//                System.out.println("better");
                 curBestRoute = tmpCalcVal;
                 for (int i = 0; i < p.length; i++) {
                     bestSequence[i] = p[i].getSequence();
-//                    System.out.println(bestSequence[i]);
                 }
             }
         }
