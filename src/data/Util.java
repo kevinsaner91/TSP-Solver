@@ -69,11 +69,15 @@ public class Util {
     }
 
     public static int[] stringArrayToIntArray(String[] s){
-        int[] convertedArray = new int[s.length];
-        for (int i = 0; i < s.length; i++) {
-            convertedArray[i] = Integer.parseInt(s[i]);
+        if(!s[0].equals("")) {
+            int[] convertedArray = new int[s.length];
+            for (int i = 0; i < s.length; i++) {
+                convertedArray[i] = Integer.parseInt(s[i]);
+            }
+            return convertedArray;
+        }else{
+            return new int[] {-1};
         }
-        return convertedArray;
     }
 
     public static boolean hasDuplicates(Point[] p) {

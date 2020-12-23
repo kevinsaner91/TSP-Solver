@@ -86,7 +86,12 @@ public class FileHandler {
             bestSeq = Util.stringArrayToIntArray(bufferedReader.readLine().split(DELIMITER));
 
             System.out.println("Imported bestSeq" + Arrays.toString(bestSeq));
-            bestScore = Integer.parseInt(bufferedReader.readLine());
+            String tmpBestScore = bufferedReader.readLine();
+            if(!tmpBestScore.equals("")) {
+                bestScore = Integer.parseInt(tmpBestScore);
+            }else{
+                bestScore = -1;
+            }
             System.out.println("Imported bestScore: " + bestScore);
 
             while((currentLine = bufferedReader.readLine()) != null){

@@ -250,7 +250,7 @@ public class Controller {
     }
 
     private void drawBestCalcLinesIfSelected() {
-        if(checkShowCalcLines.isSelected()){
+        if(checkShowCalcLines.isSelected() && bestCalculatedSeq[0] != -1){
             System.out.println(Arrays.toString(bestCalculatedSeq));
             Line line;
             for (int i = 0; i < bestCalculatedSeq.length; i++) {
@@ -310,7 +310,7 @@ public class Controller {
     }
 
     public void checkShowCalcResultToggled(){
-        if(bestCalculatedScore != 0){
+        if(bestCalculatedScore > 0){
             if(checkShowCalcResult.isSelected()){
                 lblBestRoute.setText("Result: " + bestCalculatedScore + "px");
             }else{
@@ -326,7 +326,7 @@ public class Controller {
             bestCalculatedSeq = (int[]) importedFile.get(FileHandler.BEST_SEQ);
             bestCalculatedScore = (int) importedFile.get(FileHandler.BEST_SCORE);
 
-            if(checkShowCalcResult.isSelected()){
+            if(bestCalculatedScore != -1 && checkShowCalcResult.isSelected()){
                 lblBestRoute.setText("Result: " + bestCalculatedScore + "px");
             }
 

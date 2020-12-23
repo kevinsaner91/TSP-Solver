@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="TravelingSalesmanProblem.jar" size="25248" download="eager" />
+    <jar href="TravelingSalesmanProblem.jar" size="25388" download="eager" />
   </resources>
   <jfx:javafx-desc  width="1200" height="722" main-class="GUI.Main"  name="TravelingSalesmanProblem" />
   <update check="background"/>
