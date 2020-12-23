@@ -1,7 +1,7 @@
 package GUI;
 
 public class SetTableView {
-    private String id;
+    private final String id;
 
     public SetTableView(String id){
         this.id = id;

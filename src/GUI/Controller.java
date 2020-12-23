@@ -26,16 +26,20 @@ public class Controller {
     @FXML Label                         lblBestRoute;
     @FXML TextField                     txtNumber;
     @FXML CheckBox                      checkShowLines;
+    @FXML CheckBox                      checkShowCalcResult;
+    @FXML CheckBox                      checkShowCalcLines;
     @FXML TableView<Object>             tblOrder;
     @FXML TableView<Object>             tblCity;
     @FXML TableColumn<Object, String>   clOrder;
     @FXML TableColumn<Object, String>   clCity;
 
-    public static int DEFAULT_NR_POINTS = 10;
+    public static int DEFAULT_NR_POINTS = 5;
 
     private Point   currentPressedPoint = null;
     private Point   lastPoint           = null;
     private Point[] points;
+    private int[]   bestCalculatedSeq   = null;
+    private int     bestCalculatedScore = 0;
 
     private ArrayList<Line>                 lines = new ArrayList<>();
     private final ObservableList<Object>    orderList = FXCollections.observableArrayList();
@@ -44,7 +48,7 @@ public class Controller {
     private int     firstButtonNr;
     private boolean isFirst = true;
 
-    private Task<String> backGroundCalculator;
+    private Task<String[]> backgroundCalculator;
 
     public void initialize(){
         addCityListener();
@@ -136,7 +140,6 @@ public class Controller {
             isFirst = false;
         }else{
             currentPressedPoint.setSequence(lastPoint.getSequence() + 1);
-            //currentPressedPoint.getText().setText(Integer.toString(lastPoint.getSequence() + 1));
         }
 
         orderList.add(tblCity.getSelectionModel().getSelectedItem());
@@ -147,13 +150,14 @@ public class Controller {
         createLineForCurPoint(currentPressedPoint, lastPoint);
 
         tblOrder.setItems(orderList);
-        btnCalculate.setDisable(PositionCreator.hasDuplicates(points));
+        btnCalculate.setDisable(Util.hasDuplicates(points));
     }
 
     private void createLineForCurPoint(Point pressedPoint, Point previousPoint) {
         Line line;
         if (pressedPoint.getSequence() > 0) {
             line = new Line();
+            line.setStrokeWidth(3);
             line.setEndX(pressedPoint.getLayoutX());
             line.setEndY(pressedPoint.getLayoutY());
 
@@ -164,6 +168,7 @@ public class Controller {
         }
         if (pressedPoint.getSequence() == points.length - 1){
             line = new Line();
+            line.setStrokeWidth(3);
             line.setStartX(pressedPoint.getLayoutX());
             line.setStartY(pressedPoint.getLayoutY());
 
@@ -199,37 +204,72 @@ public class Controller {
     }
 
     public void btnCalculateBestRoutePressed(){
-        backGroundCalculator = new BruteForceTask(points);
-        backGroundCalculator.setOnSucceeded(event -> {
-            lblBestRoute.setText("Result: " + backGroundCalculator.getValue() + "px");
+        backgroundCalculator = new BruteForceTask(points);
+
+        backgroundCalculator.setOnSucceeded(event -> {
+            if(checkShowCalcResult.isSelected()) {
+                lblBestRoute.setText("Result: " + backgroundCalculator.getValue()[0] + "px");
+            }else{
+                lblBestRoute.setText("Done (:");
+            }
+            bestCalculatedScore = Integer.parseInt(backgroundCalculator.getValue()[0]);
+            bestCalculatedSeq = Util.stringArrayToIntArray(backgroundCalculator.getValue()[1].split(FileHandler.DELIMITER));
+            drawBestCalcLinesIfSelected();
             btnCalculateBestRoute.setDisable(false);
             btnCancel.setDisable(true);
-            backGroundCalculator = null;
+            backgroundCalculator = null;
         });
-        backGroundCalculator.setOnRunning(event -> {
+
+        backgroundCalculator.setOnRunning(event -> {
             lblBestRoute.setText("State: calculating. . .");
             btnCalculateBestRoute.setDisable(true);
             btnCancel.setDisable(false);
         });
-        backGroundCalculator.setOnFailed(event -> {
+
+        backgroundCalculator.setOnFailed(event -> {
             event.getSource().getException().printStackTrace();
             lblBestRoute.setText("State: failed ):");
             btnCalculateBestRoute.setDisable(false);
             btnCancel.setDisable(true);
-            backGroundCalculator = null;
+            backgroundCalculator = null;
         });
-        backGroundCalculator.setOnCancelled(event -> {
+
+        backgroundCalculator.setOnCancelled(event -> {
             lblBestRoute.setText("State: canceled ):");
             btnCalculateBestRoute.setDisable(false);
             btnCancel.setDisable(true);
-            backGroundCalculator = null;
+            backgroundCalculator = null;
         });
 
-        new Thread(backGroundCalculator).start();
+        new Thread(backgroundCalculator).start();
+    }
+
+    private void drawBestCalcLinesIfSelected() {
+        if(checkShowCalcLines.isSelected()){
+            System.out.println(Arrays.toString(bestCalculatedSeq));
+            Line line;
+            for (int i = 0; i < bestCalculatedSeq.length; i++) {
+                line = new Line();
+                line.setStyle("-fx-stroke: RED");
+
+                line.setStartX( points[ bestCalculatedSeq[i] ].getLayoutX() );
+                line.setStartY( points[ bestCalculatedSeq[i] ].getLayoutY() );
+
+                if(i < bestCalculatedSeq.length - 1) {
+                    line.setEndX( points[ bestCalculatedSeq[i + 1] ].getLayoutX() );
+                    line.setEndY( points[ bestCalculatedSeq[i + 1] ].getLayoutY() );
+                }else{
+                    //last line
+                    line.setEndX( points[ bestCalculatedSeq[0] ].getLayoutX() );
+                    line.setEndY( points[ bestCalculatedSeq[0] ].getLayoutY() );
+                }
+                gridPane.getChildren().add(line);
+            }
+        }
     }
 
     public void btnCancelPressed(){
-        backGroundCalculator.cancel();
+        backgroundCalculator.cancel();
     }
 
     public void btnResetPressed () {
@@ -249,24 +289,49 @@ public class Controller {
     }
 
     public void btnGeneratePressed () {
-        if (Integer.parseInt(txtNumber.getText()) < 27) {
-            restart();
-            DEFAULT_NR_POINTS = Integer.parseInt(txtNumber.getText());
-            createButtons();
-        } else {
-            JOptionPane.showMessageDialog(null, "Kann nicht mehr als 26 punkte generieren", "to big",
-                    JOptionPane.ERROR_MESSAGE);
+        try {
+            if (Integer.parseInt(txtNumber.getText()) < 27) {
+                restart();
+                DEFAULT_NR_POINTS = Integer.parseInt(txtNumber.getText());
+                createButtons();
+            } else {
+                JOptionPane.showMessageDialog(null, "Kann nicht mehr als 26 punkte generieren", "to big",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Anzahl zu generiende Punkte ist ungültig", "NumberFormatException", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void checkShowCalcResultToggled(){
+        if(bestCalculatedScore != 0){
+            if(checkShowCalcResult.isSelected()){
+                lblBestRoute.setText("Result: " + bestCalculatedScore + "px");
+            }else{
+                lblBestRoute.setText("done");
+            }
         }
     }
 
     public void btnImportPressed () {
-        points = FileHandler.importFileToMap();
-        restart();
-        loadButtons();
+        ArrayList<Object> importedFile = FileHandler.importFileToMap();
+        if(importedFile != null){
+            points = Util.listToArray((ArrayList<Point>) importedFile.get(FileHandler.POINTS));
+            bestCalculatedSeq = (int[]) importedFile.get(FileHandler.BEST_SEQ);
+            bestCalculatedScore = (int) importedFile.get(FileHandler.BEST_SCORE);
+
+            if(checkShowCalcResult.isSelected()){
+                lblBestRoute.setText("Result: " + bestCalculatedScore + "px");
+            }
+
+            restart();
+            loadButtons();
+            drawBestCalcLinesIfSelected();
+        }
     }
 
     public void btnExportPressed () {
-        FileHandler.exportMapToFile(points);
+        FileHandler.exportMapToFile(points, bestCalculatedSeq, bestCalculatedScore);
     }
 
     private void restart(){
@@ -282,7 +347,8 @@ public class Controller {
         List<Point> tempPointList = Arrays.asList(points);
         tempPointList.forEach(point -> {
             point.setSequence(point.getPointNr()); //reset the point's sequence
-            point.getText().setText(Integer.toString(point.getSequence())); 
+//            point.getText().setText(Integer.toString(point.getSequence()));
+            point.getText().setText(point.getNrAsLetter());
         });
         
         points = (Point[]) tempPointList.toArray();

@@ -3,39 +3,39 @@ package data;
 import javafx.concurrent.Task;
 import javax.swing.*;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 public class SolutionBruteForce {
     private final DistanceCalculator calculator = new DistanceCalculator();
     private final Point[] points;
-    private final Task<String> task;
+    private final int[] bestSequence;
+    private final Task<String[]> task;
     private int maxDigit;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
 
     /**
      * Prepares the class for bruteforce
      * @param p point[] used to change the sequences and calculate the distances
      * @param t current task used to check if is canceled;
      */
-    public SolutionBruteForce(Point[] p, Task<String> t){
+    public SolutionBruteForce(Point[] p, Task<String[]> t){
         points = p;
+        bestSequence = new int[p.length];
         task = t;
     }
 
     /**
      * bruteforce the best route through a Point[]
-     * @return String containing the best route.
+     * @return String[] containing the best route and its sequence.
      */
-    public String bruteBestWay(){
+    public String[] bruteBestWay(){
         if(points.length > 14){
             JOptionPane.showMessageDialog(null, "Kann für maximal 14 Punkte berechnen! Anzahl Punkte: " + points.length,
                     "Overflow", JOptionPane.ERROR_MESSAGE);
-            return "Overflow";
+            return new String[] {"Overflow"};
         }else {
-            startTime = LocalDateTime.now();
+            LocalDateTime startTime = LocalDateTime.now();
+            System.out.println("Calculating");
 
-            int bestRoute = 999999999;
+            int bestResult = 999999999;
             boolean wasZero;
             char[] newSequences;
 
@@ -48,10 +48,10 @@ public class SolutionBruteForce {
                     newSequences = Long.toString(seqNr).toCharArray();
 
                     if(newSequences.length < points.length){
-                        newSequences = putZeroInCharArray(newSequences);
+                        newSequences = Util.putZeroInCharArray(newSequences);
                     }
 
-                    if (getCharArrayMaxValue(newSequences) <= maxDigit) {
+                    if (Util.getCharArrayMaxValue(newSequences) <= maxDigit) {
                         for (int pNr = 0; pNr < points.length; pNr++) {
                             int newSeq;
                             try {
@@ -66,20 +66,21 @@ public class SolutionBruteForce {
                             }
                             points[pNr].setSequence(newSeq);
                         }
-                        bestRoute = calculateCurrentSequence(bestRoute, points);
+                        bestResult = calculateCurrentSequence(bestResult, points);
                     }
                 }else{
                     System.out.println("<-- canceling task -->");
                     break;
                 }
             }
-            endTime = LocalDateTime.now();
-            System.out.println("<-- ---------------------------- -->");
+            LocalDateTime endTime = LocalDateTime.now();
+            System.out.println("\n<-- ---------------------------- -->");
             System.out.println("<-- " + "Start Time: " + startTime + " -->");
             System.out.println("<-- " + "End Time: " + endTime + " -->");
-            System.out.println("<-- " + "Result: " + bestRoute + " ");
+            System.out.println("<-- " + "Result: " + bestResult + " ");
             System.out.println("<-- ---------------------------- -->");
-            return Integer.toString(bestRoute);
+
+            return new String[]{Integer.toString(bestResult), Util.arrayToCleanString(bestSequence)};
         }
     }
 
@@ -119,51 +120,23 @@ public class SolutionBruteForce {
     /**
      * Calculates the route through a Point[]
      * Checks if the route is the current best
-     * Creates a clean output for the calculation
-     * @param bestRoute the current best route
+     * @param curBestRoute the current best route
      * @param p a Point[] to calculate the sequence of
      * @return best route (only changed if calculated route is better than previous best route)
      */
-    public int calculateCurrentSequence(int bestRoute, Point[] p){
-        int currentRoute;
-
-        if (!PositionCreator.hasDuplicates(p)) {
-            System.out.println("<-.->");
-            Arrays.asList(p).forEach(point -> System.out.print("| " + point.getSequence() + " |"));
-            System.out.println();
-
-            currentRoute = calculator.calculateDistance(p);
-            if (currentRoute < bestRoute) {
-                bestRoute = currentRoute;
-            }
-            System.out.println("<-.->");
-        }
-        return bestRoute;
-    }
-
-    /**
-     * searches the highest value in an char[]
-     * @param charArray char[] to search the highest value in
-     * @return the highest value in the given array
-     */
-    public Long getCharArrayMaxValue(char[] charArray){
-        long maxValue = 0;
-        for (char c: charArray) {
-            if(Character.getNumericValue(c) > maxValue){
-                maxValue = Character.getNumericValue(c);
+    public int calculateCurrentSequence(int curBestRoute, Point[] p){
+        if(!Util.hasDuplicates(p)) {
+            int tmpCalcVal = calculator.calculateDistance(p);
+            if (tmpCalcVal < curBestRoute) {
+                System.out.print(" .");
+//                System.out.println("better");
+                curBestRoute = tmpCalcVal;
+                for (int i = 0; i < p.length; i++) {
+                    bestSequence[i] = p[i].getSequence();
+//                    System.out.println(bestSequence[i]);
+                }
             }
         }
-        return maxValue;
-    }
-
-    public char[] putZeroInCharArray(char[] oldArray){
-        char[] newArray = new char[oldArray.length + 1];
-
-        newArray[0] = (char) 48;
-        for (int i = 1; i < newArray.length; i++) {
-            newArray[i] = oldArray[i-1];
-        }
-
-        return newArray;
+        return curBestRoute;
     }
 }

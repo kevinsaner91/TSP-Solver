@@ -26,7 +26,7 @@
       <Button fx:id="btnImport" layoutX="40.0" layoutY="623.0" mnemonicParsing="false" onAction="#btnImportPressed" prefHeight="25.0" prefWidth="93.0" style="-fx-background-color: #484848;" text="Import Map" textFill="WHITE" />
       <Button fx:id="btnExport" layoutX="146.0" layoutY="623.0" mnemonicParsing="false" onAction="#btnExportPressed" style="-fx-background-color: #484848;" text="Export Map" textFill="WHITE" />
       <Button fx:id="btnReconnect" layoutX="77.0" layoutY="281.0" mnemonicParsing="false" onAction="#btnReconnectPressed" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #484848;" text="neu verbinden" textFill="WHITE" />
-      <CheckBox fx:id="checkShowLines" layoutX="40.0" layoutY="240.0" mnemonicParsing="false" onAction="#drawLinesIfActivated" text="Linien anzeigen" textFill="#686868">
+      <CheckBox fx:id="checkShowLines" layoutX="40.0" layoutY="240.0" mnemonicParsing="false" onAction="#drawLinesIfActivated" selected="true" text="Linien anzeigen" textFill="#686868">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font></CheckBox>
@@ -42,6 +42,16 @@
       </TableView>
       <Button fx:id="btnCalculateBestRoute" layoutX="580.0" layoutY="205.0" mnemonicParsing="false" onAction="#btnCalculateBestRoutePressed" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #484848;" text="Beste Route Berechnen" textFill="WHITE" />
       <Label fx:id="lblBestRoute" layoutX="731.0" layoutY="209.0" text="Status: " textFill="#686868" />
-      <Button fx:id="btnCancel" disable="true" layoutX="899.0" layoutY="205.0" mnemonicParsing="false" onAction="#btnCancelPressed" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #484848;" text="Abbrechen" textFill="WHITE" />
+      <Button fx:id="btnCancel" disable="true" layoutX="863.0" layoutY="205.0" mnemonicParsing="false" onAction="#btnCancelPressed" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #484848;" text="Abbrechen" textFill="WHITE" />
+      <CheckBox fx:id="checkShowCalcResult" layoutX="580.0" layoutY="173.0" mnemonicParsing="false" onAction="#checkShowCalcResultToggled" selected="true" text="Berechnetes Resultat anzeigen" textFill="#686868">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="checkShowCalcLines" disable="true" layoutX="786.0" layoutY="173.0" mnemonicParsing="false" text="Linien im Raster anzeigen" textFill="#686868">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </CheckBox>
    </children>
 </Pane>

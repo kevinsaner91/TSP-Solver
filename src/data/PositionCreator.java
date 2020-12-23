@@ -58,21 +58,4 @@ public class PositionCreator {
 
         return tempY;
     }
-
-    public static boolean hasDuplicates(Point[] p) {
-        Integer[] allSequences = new Integer[p.length];
-        for (int i = 0; i < p.length; i++) {
-            allSequences[i] = p[i].getSequence();
-        }
-
-        Set<Integer> tempSet = new HashSet<Integer>();
-        for (Integer i : allSequences) {
-            if (!tempSet.add(i)) {
-//                System.out.println("Has duplicates");
-//                Arrays.asList(p).forEach(point -> System.out.println("point :" + point.getPointNr() + " || seq: " + point.getSequence()));
-                return true;
-            }
-        }
-        return false;
-    }
 }

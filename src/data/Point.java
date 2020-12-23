@@ -5,9 +5,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 public class Point extends Circle {
-    int sequence;
-    int pointNr;
-    Text text = new Text();
+    private int sequence;
+    private int pointNr;
+    private Text text = new Text();
 
     public Text getText() {
         return text;
