@@ -252,7 +252,6 @@ public class Controller {
 
     private void createCalculatedLines() {
         if(bestCalculatedSeq[0] != -1){
-            bestCalculatedSeq = new int[points.length];
             System.out.println(Arrays.toString(bestCalculatedSeq));
             Line line;
             for (int i = 0; i < bestCalculatedSeq.length; i++) {

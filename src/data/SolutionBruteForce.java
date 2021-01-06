@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class SolutionBruteForce {
+    public static final int MAX_DIGIT = 10;
     private final DistanceCalculator calculator = new DistanceCalculator();
     private final Point[] points;
     private final Task<String[]> task;
@@ -34,8 +35,8 @@ public class SolutionBruteForce {
      * @return String[] containing the best route and its sequence.
      */
     public String[] bruteBestWay(){
-        if(points.length > 14){
-            JOptionPane.showMessageDialog(null, "Kann für maximal 14 Punkte berechnen! Anzahl Punkte: " + points.length,
+        if(points.length > MAX_DIGIT){
+            JOptionPane.showMessageDialog(null, "Kann für maximal " + MAX_DIGIT + " Punkte berechnen! Anzahl Punkte: " + points.length,
                     "Overflow", JOptionPane.ERROR_MESSAGE);
             return new String[] {"-1"};
         }else {
@@ -100,10 +101,9 @@ public class SolutionBruteForce {
         maxDigit = arrayLength - 1;
         StringBuilder maxString = new StringBuilder();
 
-        for (int i = 0; i < arrayLength - 1; i++) {
+        for (long i = 0; i < arrayLength - 1; i++) {
             maxString.append(maxDigit - i);
         }
-
         return Long.parseLong(maxString.toString());
     }
 
@@ -115,10 +115,9 @@ public class SolutionBruteForce {
     private long calcMinNr(int arrayLength){
         StringBuilder minString = new StringBuilder();
 
-        for (int i = 0; i < arrayLength; i++) {
+        for (long i = 0; i < arrayLength; i++) {
             minString.append(i);
         }
-
         return Long.parseLong(minString.toString());
     }
 
