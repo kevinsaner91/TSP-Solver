@@ -13,7 +13,7 @@ public class Util {
      * @param array the array that gets converted
      * @return a String that looks like the array
      */
-    public static String arrayToCleanString(int[] array){
+    public static String arrayToCleanString(Integer[] array){
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
             builder.append(array[i]);

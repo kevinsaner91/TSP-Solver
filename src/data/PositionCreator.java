@@ -19,14 +19,14 @@ public class PositionCreator {
 
     Random rnd = new Random();
 
-    public Point[] createPointWithPos(int countpoint){
+    public Point[] createPointWithPos(int countPoint){
 
         usedXPos = new ArrayList<>();
         usedYPos = new ArrayList<>();
 
-        points = new Point[countpoint];
+        points = new Point[countPoint];
 
-        for (int pos = 0; pos < countpoint; pos++){
+        for (int pos = 0; pos < countPoint; pos++){
             points[pos] = new Point();
             points[pos].setLayoutX(createX());
             points[pos].setLayoutY(createY());

@@ -16,7 +16,7 @@
             <Font name="Arial Rounded MT Bold" size="15.0" />
          </font></Label>
       <Button fx:id="btnReset" layoutX="40.0" layoutY="662.0" mnemonicParsing="false" onAction="#btnResetPressed" style="-fx-background-color: #484848;" text="Zurücksetzen" textFill="WHITE" />
-      <Label layoutX="39.0" layoutY="65.0" prefHeight="65.0" prefWidth="795.0" text="Traveling Salesman Problem" textFill="#686868">
+      <Label layoutX="39.0" layoutY="65.0" prefHeight="65.0" prefWidth="812.0" text="Traveling Salesman Problem" textFill="#686868">
          <font>
             <Font name="Arial Bold" size="57.0" />
          </font>
@@ -48,7 +48,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="checkShowCalcLines" disable="true" layoutX="786.0" layoutY="173.0" mnemonicParsing="false" text="Linien im Raster anzeigen" textFill="#686868">
+      <CheckBox fx:id="checkShowCalcLines" layoutX="786.0" layoutY="173.0" mnemonicParsing="false" onAction="#drawCalculatedLinesIfSelected" selected="true" text="Linien im Raster anzeigen" textFill="#686868">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

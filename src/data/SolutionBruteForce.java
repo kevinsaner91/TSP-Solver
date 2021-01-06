@@ -3,13 +3,15 @@ package data;
 import javafx.concurrent.Task;
 import javax.swing.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class SolutionBruteForce {
     private final DistanceCalculator calculator = new DistanceCalculator();
     private final Point[] points;
-    private final int[] bestSequence;
     private final Task<String[]> task;
+    private final ArrayList<Integer> tempSeq;
     private int maxDigit;
+    private Integer[] bestSequence;
 
     /**
      * Prepares the class for bruteforce
@@ -18,8 +20,13 @@ public class SolutionBruteForce {
      */
     public SolutionBruteForce(Point[] p, Task<String[]> t){
         points = p;
-        bestSequence = new int[p.length];
+        bestSequence = new Integer[p.length];
         task = t;
+
+        tempSeq = new ArrayList<>();
+        for (int i = 0; i < p.length; i++) { //fill a default length
+            tempSeq.add(i);
+        }
     }
 
     /**
@@ -89,7 +96,7 @@ public class SolutionBruteForce {
      * @param arrayLength length of the array
      * @return highest possible Sequence as a Long (ex. 9876543210)
      */
-    public long calcMaxNr(int arrayLength){
+    private long calcMaxNr(int arrayLength){
         maxDigit = arrayLength - 1;
         StringBuilder maxString = new StringBuilder();
 
@@ -97,7 +104,6 @@ public class SolutionBruteForce {
             maxString.append(maxDigit - i);
         }
 
-        System.out.println("maxNr set to: " + Long.parseLong(maxString.toString()));
         return Long.parseLong(maxString.toString());
     }
 
@@ -106,14 +112,13 @@ public class SolutionBruteForce {
      * @param arrayLength length of the array
      * @return lowest possible Sequence as a Long (ex. 0123456789)
      */
-    public long calcMinNr(int arrayLength){
+    private long calcMinNr(int arrayLength){
         StringBuilder minString = new StringBuilder();
 
         for (int i = 0; i < arrayLength; i++) {
             minString.append(i);
         }
 
-        System.out.println("minNr set to: " + Long.parseLong(minString.toString()));
         return Long.parseLong(minString.toString());
     }
 
@@ -124,17 +129,23 @@ public class SolutionBruteForce {
      * @param p a Point[] to calculate the sequence of
      * @return best route (only changed if calculated route is better than previous best route)
      */
-    public int calculateCurrentSequence(int curBestRoute, Point[] p){
+    private int calculateCurrentSequence(int curBestRoute, Point[] p){
         if(!Util.hasDuplicates(p)) {
             int tmpCalcVal = calculator.calculateDistance(p);
             if (tmpCalcVal < curBestRoute) {
-                System.out.print(" .");
+                System.out.print(" . ");
                 curBestRoute = tmpCalcVal;
-                for (int i = 0; i < p.length; i++) {
-                    bestSequence[i] = p[i].getSequence();
-                }
+                setBestSequence(p);
             }
         }
         return curBestRoute;
+    }
+
+    private void setBestSequence(Point[] p){
+        for (Point point : p) {
+            tempSeq.set(point.getSequence(), point.getPointNr());
+        }
+
+        bestSequence = tempSeq.toArray(bestSequence);
     }
 }

@@ -42,6 +42,7 @@ public class Controller {
     private int     bestCalculatedScore = 0;
 
     private ArrayList<Line>                 lines = new ArrayList<>();
+    private ArrayList<Line> calculatedLines = new ArrayList<>();
     private final ObservableList<Object>    orderList = FXCollections.observableArrayList();
     private final ObservableList<Object>    cityList = FXCollections.observableArrayList();
 
@@ -217,7 +218,7 @@ public class Controller {
                 }
                 bestCalculatedScore = Integer.parseInt(backgroundCalculator.getValue()[0]);
                 bestCalculatedSeq = Util.stringArrayToIntArray(backgroundCalculator.getValue()[1].split(FileHandler.DELIMITER));
-                drawBestCalcLinesIfSelected();
+                createCalculatedLines();
             }
 
             btnCalculateBestRoute.setDisable(false);
@@ -249,8 +250,9 @@ public class Controller {
         new Thread(backgroundCalculator).start();
     }
 
-    private void drawBestCalcLinesIfSelected() {
-        if(checkShowCalcLines.isSelected() && bestCalculatedSeq[0] != -1){
+    private void createCalculatedLines() {
+        if(bestCalculatedSeq[0] != -1){
+            bestCalculatedSeq = new int[points.length];
             System.out.println(Arrays.toString(bestCalculatedSeq));
             Line line;
             for (int i = 0; i < bestCalculatedSeq.length; i++) {
@@ -268,8 +270,18 @@ public class Controller {
                     line.setEndX( points[ bestCalculatedSeq[0] ].getLayoutX() );
                     line.setEndY( points[ bestCalculatedSeq[0] ].getLayoutY() );
                 }
-                gridPane.getChildren().add(line);
+                calculatedLines.add(line);
             }
+            drawCalculatedLinesIfSelected();
+        }
+    }
+
+    public void drawCalculatedLinesIfSelected(){
+        if(checkShowCalcLines.isSelected()){
+            gridPane.getChildren().removeAll(calculatedLines);
+            gridPane.getChildren().addAll(calculatedLines);
+        }else{
+            gridPane.getChildren().removeAll(calculatedLines);
         }
     }
 
@@ -283,6 +295,7 @@ public class Controller {
         tblCity.getItems().clear();
         tblOrder.getItems().clear();
         lines = new ArrayList<>();
+        calculatedLines = new ArrayList<>();
     }
 
     public void btnReconnectPressed(){
@@ -332,7 +345,7 @@ public class Controller {
 
             restart();
             loadButtons();
-            drawBestCalcLinesIfSelected();
+            createCalculatedLines();
         }
     }
 
@@ -345,6 +358,7 @@ public class Controller {
         lastPoint              = null;
         currentPressedPoint = null;
         lines                   = new ArrayList<>();
+        calculatedLines = new ArrayList<>();
         
         tblOrder.getItems().clear();
         gridPane.getChildren().clear();
@@ -353,7 +367,6 @@ public class Controller {
         List<Point> tempPointList = Arrays.asList(points);
         tempPointList.forEach(point -> {
             point.setSequence(point.getPointNr()); //reset the point's sequence
-//            point.getText().setText(Integer.toString(point.getSequence()));
             point.getText().setText(point.getNrAsLetter());
         });
         
